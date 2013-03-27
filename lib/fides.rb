@@ -1,6 +1,7 @@
 require "fides/version"
 require 'active_support/concern'
 require 'active_record'
+require 'active_support/inflector'
 
 module Fides
 
@@ -9,6 +10,8 @@ module Fides
   module ClassMethods
 
     def add_polymorphic_triggers(opts)
+      raise ArgumentError, "missing :associated_models from options hash" if !opts.has_key?(:associated_models) 
+      raise ArgumentError, "missing :polymorphic_model from options hash" if !opts.has_key?(:polymorphic_model)
       associated_models = opts[:associated_models]
       polymorphic_model = opts[:polymorphic_model]
       interface_name = opts.has_key?(:interface_name) ? opts[:interface_name] : interface_name(polymorphic_model)
