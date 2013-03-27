@@ -8,12 +8,12 @@ module Fides
   module ClassMethods
 
     def add_polymorphic_triggers(opts)
-      has_many_models = opts[:has_many_models]
+      associated_models = opts[:associated_models]
       polymorphic_model = opts[:polymorphic_model]
       interface_name = opts.has_key?(:interface_name) ? opts[:interface_name] : interface_name(polymorphic_model)
 
-      sql = get_create_function_sql(interface_name, has_many_models, polymorphic_model)
-      sql << get_delete_function_sql(interface_name, has_many_models, polymorphic_model)
+      sql = get_create_function_sql(interface_name, associated_models, polymorphic_model)
+      sql << get_delete_function_sql(interface_name, associated_models, polymorphic_model)
 
       execute sql
     end
