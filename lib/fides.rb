@@ -1,4 +1,5 @@
 require "fides/version"
+require 'active_support/concern'
 
 module Fides
 
