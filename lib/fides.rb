@@ -116,3 +116,5 @@ module Fides
   end
 
 end
+
+ActiveRecord::Migration.send(:include, Fides)
