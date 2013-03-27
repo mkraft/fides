@@ -35,17 +35,17 @@ Fides has the following public methods:
 Following the [Rails Polymorphic Associations example](http://guides.rubyonrails.org/association_basics.html#polymorphic-associations),
 you would do the following in a migration:
 
-  class AddReferentialIntegrityToImageable < ActiveRecord::Migration
+    class AddReferentialIntegrityToImageable < ActiveRecord::Migration
 
-    def self.up
-      add_polymorphic_triggers(:polymorphic_model => "Picture", :has_many_models => ["Employee", "Product"])
-    end
+      def self.up
+        add_polymorphic_triggers(:polymorphic_model => "Picture", :has_many_models => ["Employee", "Product"])
+      end
 
-    def self.down
-      remove_polymorphic_triggers(:polymorphic_model => "Picture")
+      def self.down
+        remove_polymorphic_triggers(:polymorphic_model => "Picture")
+      end
+    
     end
-  
-  end
 
 Fides assumes the use of Rails conventions, so if there's something that needs overriding just open a
 bug or shoot me a pull request.
