@@ -50,6 +50,10 @@ you would do the following in a migration:
 Fides assumes the use of Rails conventions, so if there's something that needs overriding just open a
 bug or shoot me a pull request.
 
+## Caveats
+
+Fides currently only functions with PostgreSQL. Please feel free to contribute other adapters.
+
 ## Contributing
 
 1. Fork it
