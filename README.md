@@ -66,13 +66,12 @@ If you're using Rails < version 3.1, then use Fides in your migration like this:
     
     end
 
+## Caveats
+
 Fides assumes the use of Rails conventions, so if you find a case for something that needs overriding, 
 please feel free to submit a bug or send a pull request.
 
-## Caveats
-
-Fides currently only functions with PostgreSQL. Please feel free to contribute other adapters as 
-desired.
+Fides currently only functions with PostgreSQL. Please feel free to contribute other adapters as desired.
 
 ## Contributing
 
