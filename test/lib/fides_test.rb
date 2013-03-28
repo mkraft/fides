@@ -1,4 +1,4 @@
-require_relative '../../test_helper'
+require_relative '../test_helper'
  
 describe Fides do
 
@@ -26,14 +26,14 @@ describe Fides do
 
   it "raises and exception if :associated_models isn't a parameter of #add_polymorphic_triggers" do
     exception = assert_raises(ArgumentError) { 
-      MyTestMigration.add_polymorphic_triggers(:polymorphic_model => "Picture") 
+      @my_test_migration.add_polymorphic_triggers(:polymorphic_model => "Picture") 
     }
     assert_match /associated_models/, exception.message
   end
 
   it "raises and exception if :polymorphic_model isn't a parameter of #add_polymorphic_triggers" do
     exception = assert_raises(ArgumentError) { 
-      MyTestMigration.add_polymorphic_triggers(:associated_models => ["Product", "Employee"]) 
+      @my_test_migration.add_polymorphic_triggers(:associated_models => ["Product", "Employee"]) 
     }
     assert_match /polymorphic_model/, exception.message
   end
