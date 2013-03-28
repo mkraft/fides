@@ -15,14 +15,15 @@ describe Fides do
       end
     end
     @my_test_association = MyTestAssociaiton.new
+    @my_test_migration = MyTestMigration.new
   end
 
   it "responds to add_polymorphic_triggers" do
-    assert_respond_to ActiveRecord::Migration, :add_polymorphic_triggers
+    assert_respond_to @my_test_migration, :add_polymorphic_triggers
   end
 
   it "responds to remove_polymorphic_triggers" do
-    assert_respond_to ActiveRecord::Migration, :remove_polymorphic_triggers
+    assert_respond_to @my_test_migration, :remove_polymorphic_triggers
   end
 
   it "includes the ability to use of the constantize method" do
