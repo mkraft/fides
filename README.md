@@ -1,15 +1,18 @@
 # Fides
 
-This gem adds helper methods for use in Rails migrations that creates SQL triggers to enforce the 
-integrity of polymorphic associations at the database level.
+Adds methods for use in Rails migrations to enfoce polymorphic associations at the database level.
 
-When an attempt is made to create or update a record in a polymorphic table the SQL trigger checks for
-the existance of the referred-to model of the specified type in the other table. If it doesn't exist in 
-it throws a descriptive SQL exception.
+### Longer Description
 
-Similarly, when an attempt is made to delete a record from a table that could be pointed to from the
-polymorphic table, a SQL trigger checks that there are no references to it in the polymorphic table. If
-there are it throws a SQL exception suggesting changing the delete order.
+The methods that this gem exposes are for use in Rails migrations and create SQL Triggers to enforce
+the data integrity of Polymorphic Associations.
+
+The triggers are invoked by the database before an insert or update on the polymorphic table, and before 
+a delete on tables referred to by the polymorphic table.
+
+If an insert/update is attempted on the polymophic table with a record that referrs to a non-existent 
+record in another table then a SQL error is raised. If a delete is attempted from a table that is 
+referred to by a record in the polymorphic table then a SQL error is raised.
 
 ## Installation
 
