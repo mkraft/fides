@@ -5,15 +5,7 @@ describe Fides do
   before do
     class Picture < ActiveRecord::Base; end
     class MyTestMigration < ActiveRecord::Migration; end
-    class MyTestAssociaiton
-      def options
-        { :polymorphic => true }
-      end
-
-      def name
-        "imageable"
-      end
-    end
+    class MyTestAssociaiton; end
     @my_test_association = MyTestAssociaiton.new
     @my_test_migration = MyTestMigration.new
   end
