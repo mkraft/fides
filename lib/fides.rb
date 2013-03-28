@@ -121,4 +121,4 @@ module Fides
 
 end
 
-ActiveRecord::Migration.send(:include, Fides)
+ActiveRecord::Base.send(:include, Fides)
