@@ -1,6 +1,6 @@
 # Fides
 
-Adds methods for use in Rails migrations to enfoce polymorphic associations at the database level.
+Adds methods for use in Rails migrations to enforce polymorphic associations at the database level.
 
 ### Longer Description
 
@@ -10,7 +10,7 @@ the data integrity of Polymorphic Associations.
 The triggers are invoked by the database before an insert or update on the polymorphic table, and before 
 a delete on tables referred to by the polymorphic table.
 
-If an insert/update is attempted on the polymophic table with a record that referrs to a non-existent 
+If an insert/update is attempted on the polymorphic table with a record that refers to a non-existent 
 record in another table then a SQL error is raised. If a delete is attempted from a table that is 
 referred to by a record in the polymorphic table then a SQL error is raised.
 
