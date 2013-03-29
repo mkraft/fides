@@ -12,6 +12,10 @@ describe Fides::Postgresql do
     assert_respond_to subject, :get_delete_function_sql
   end
 
+  it 'responds to #get_drop_function_sql' do
+    assert_respond_to subject, :get_drop_function_sql
+  end
+
   it 'returns an expected SQL string' do
     sql = subject.get_create_function_sql("imageable", ["Product", "Employee"], "Picture")
     assert_equal subject.strip_non_essential_spaces(CREATE_SQL), sql
