@@ -32,6 +32,7 @@ module Fides
 
   def remove_polymorphic_triggers(opts)
     raise ArgumentError, "missing :polymorphic_model from options hash" if !opts.has_key?(:polymorphic_model)
+    
     polymorphic_model = opts[:polymorphic_model]
     interface = opts.has_key?(:interface_name) ? opts[:interface_name] : interface_name(polymorphic_model)
 
