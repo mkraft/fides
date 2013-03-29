@@ -54,7 +54,6 @@ module Fides
     model_name.constantize.reflect_on_all_associations.select { |r| r if r.options[:polymorphic] }.first.name
   end
 
- 
 end
 
 class ActiveRecord::Migration
