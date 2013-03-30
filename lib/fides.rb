@@ -10,7 +10,7 @@ require 'fides/database_adapter_error'
 
 module Fides
 
-  SUPPORTED_ADAPTERS = ["postgresql"]
+  SUPPORTED_ADAPTERS = ["postgresql", "sqlite3"]
 
   extend ActiveSupport::Concern
 
