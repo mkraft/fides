@@ -8,11 +8,13 @@ module Fides
     def self.executable_add_statements(interface_name, models, polymorphic_model)
       statements = []
       statements << drop_constraint_sql(interface_name, "create")
-      statements << create_and_update_constraint_sql(interface_name, models, polymorphic_model)
+      statements << create_constraint_sql(interface_name, models, polymorphic_model)
       models.each do |model|
         statements << drop_constraint_sql(model.constantize.table_name, "delete")
         statements << delete_constraint_sql(interface_name, model, polymorphic_model)
       end
+      statements << drop_constraint_sql(interface_name, "update")
+      statements << update_constraint_sql(interface_name, models, polymorphic_model)
       return statements
     end
 
@@ -29,11 +31,33 @@ module Fides
       strip_non_essential_spaces "DROP TRIGGER IF EXISTS check_#{name}_#{drop_type}_integrity;"
     end
 
-    def self.create_and_update_constraint_sql(interface_name, models, polymorphic_model)
+    def self.create_constraint_sql(interface_name, models, polymorphic_model)
         sql = %{
 
         CREATE TRIGGER check_#{interface_name}_create_integrity
           BEFORE INSERT ON #{polymorphic_model.constantize.table_name}
+          BEGIN 
+            SELECT CASE 
+        }
+
+      models.each do |model|
+        sql << %{ 
+          WHEN ((NEW.#{interface_name}_type = '#{model}') AND (SELECT id 
+            FROM #{model.constantize.table_name} WHERE id = NEW.#{interface_name}_id) ISNULL) 
+            THEN RAISE(ABORT, 'There is no #{model} with that id.') 
+        }
+      end
+
+      sql << "END; END;"
+
+      return strip_non_essential_spaces(sql)
+    end
+
+      def self.update_constraint_sql(interface_name, models, polymorphic_model)
+        sql = %{
+
+        CREATE TRIGGER check_#{interface_name}_update_integrity
+          BEFORE UPDATE ON #{polymorphic_model.constantize.table_name}
           BEGIN 
             SELECT CASE 
         }

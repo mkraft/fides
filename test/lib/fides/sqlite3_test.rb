@@ -42,6 +42,11 @@ describe Fides::Sqlite3 do
       END;
     }
   end
+
+  let(:add_sql3) do %{
+    DROP TRIGGER IF EXISTS check_products_delete_integrity;
+    }
+  end
   
   let(:add_sql4) do %{
     CREATE TRIGGER check_products_delete_integrity
@@ -72,8 +77,20 @@ describe Fides::Sqlite3 do
     }
   end
 
-  let(:add_sql3) do %{
-    DROP TRIGGER IF EXISTS check_products_delete_integrity;
+  let(:add_sql7) do %{
+    DROP TRIGGER IF EXISTS check_imageable_update_integrity;
+    }
+  end
+
+  let(:add_sql8) do %{
+    CREATE TRIGGER check_imageable_update_integrity
+      BEFORE UPDATE ON pictures
+      BEGIN 
+        SELECT CASE
+          WHEN ((NEW.imageable_type = 'Product') AND (SELECT id FROM products WHERE id = NEW.imageable_id) ISNULL) THEN RAISE(ABORT, 'There is no Product with that id.')
+          WHEN ((NEW.imageable_type = 'Employee') AND (SELECT id FROM employees WHERE id = NEW.imageable_id) ISNULL) THEN RAISE(ABORT, 'There is no Employee with that id.')
+        END;
+      END;
     }
   end
 
