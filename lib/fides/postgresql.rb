@@ -3,7 +3,19 @@ module Fides
   class Postgresql
     include SqlWriter
 
-    def self.get_create_function_sql(interface_name, models, polymorphic_model)
+    def self.executable_add_statements(interface_name, models, polymorphic_model)
+      sql = create_and_update_constraint_sql(interface_name, models, polymorphic_model)
+      sql << delete_constraint_sql(interface_name, models, polymorphic_model)
+      return [sql]
+    end
+
+    def self.executable_remove_statements(interface_name)
+      [drop_constraints_sql(interface_name)]
+    end
+
+    private
+
+    def self.create_and_update_constraint_sql(interface_name, models, polymorphic_model)
 
       sql = "DROP FUNCTION IF EXISTS check_#{interface_name}_create_integrity() CASCADE;"
 
@@ -34,12 +46,13 @@ module Fides
           CREATE TRIGGER check_#{interface_name}_create_integrity_trigger 
             BEFORE INSERT OR UPDATE ON #{polymorphic_model.constantize.table_name} 
             FOR EACH ROW EXECUTE PROCEDURE check_#{interface_name}_create_integrity();
+
       }
 
       return strip_non_essential_spaces(sql)
     end
 
-    def self.get_delete_function_sql(interface_name, models, polymorphic_model)
+    def self.delete_constraint_sql(interface_name, models, polymorphic_model)
       polymorphic_model_table_name = polymorphic_model.constantize.table_name
       
       sql = ""
@@ -82,7 +95,7 @@ module Fides
       return strip_non_essential_spaces(sql)
     end
 
-    def self.get_drop_function_sql(interface_name)
+    def self.drop_constraints_sql(interface_name)
       sql = %{
         DROP FUNCTION IF EXISTS check_#{interface_name}_create_integrity() CASCADE;
         DROP FUNCTION IF EXISTS check_#{interface_name}_delete_integrity() CASCADE;

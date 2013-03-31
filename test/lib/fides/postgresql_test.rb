@@ -4,34 +4,25 @@ describe Fides::Postgresql do
 
   let(:subject) { Fides::Postgresql }
 
-  it 'responds to #get_create_function_sql' do
-    assert_respond_to subject, :get_create_function_sql
+  it 'responds to #executable_add_statements' do
+    assert_respond_to subject, :executable_add_statements
   end
 
-  it 'responds to #get_delete_function_sql' do
-    assert_respond_to subject, :get_delete_function_sql
+  it 'responds to #executable_remove_statements' do
+    assert_respond_to subject, :executable_remove_statements
   end
 
-  it 'responds to #get_drop_function_sql' do
-    assert_respond_to subject, :get_drop_function_sql
+  it 'returns an expected add constraints SQL string' do
+    sql = subject.executable_add_statements("imageable", ["Product", "Employee"], "Picture")[0]
+    assert_equal subject.strip_non_essential_spaces(add_constraints_sql), sql
   end
 
-  it 'returns an expected create SQL string' do
-    sql = subject.get_create_function_sql("imageable", ["Product", "Employee"], "Picture")
-    assert_equal subject.strip_non_essential_spaces(create_sql), sql
+  it 'returns an expected drop constraints SQL string' do
+    sql = subject.executable_remove_statements("imageable")[0]
+    assert_equal subject.strip_non_essential_spaces(drop_constraing_sql), sql 
   end
 
-  it 'returns an expected delete SQL string' do
-    sql = subject.get_delete_function_sql("imageable", ["Product", "Employee"], "Picture")
-    assert_equal subject.strip_non_essential_spaces(delete_sql), sql 
-  end
-
-  # it 'returns an expected drop SQL string' do
-  #   sql = subject.get_delete_function_sql("imageable", ["Product", "Employee"], "Picture")
-  #   assert_equal subject.strip_non_essential_spaces(drop_sql), sql 
-  # end
-
-  let(:create_sql) do %{
+  let(:add_constraints_sql) do %{
 
       DROP FUNCTION IF EXISTS check_imageable_create_integrity() CASCADE;
 
@@ -52,14 +43,7 @@ describe Fides::Postgresql do
 
       CREATE TRIGGER check_imageable_create_integrity_trigger
         BEFORE INSERT OR UPDATE ON pictures
-        FOR EACH ROW EXECUTE PROCEDURE check_imageable_create_integrity();
-
-    }
-  end
-
-  let(:delete_sql) do %{
-
-      CREATE FUNCTION check_imageable_delete_integrity() RETURNS TRIGGER AS '
+        FOR EACH ROW EXECUTE PROCEDURE check_imageable_create_integrity();CREATE FUNCTION check_imageable_delete_integrity() RETURNS TRIGGER AS '
         BEGIN
           IF TG_TABLE_NAME = ''products'' AND EXISTS (
             SELECT id FROM pictures
@@ -86,10 +70,9 @@ describe Fides::Postgresql do
     }
   end
 
-  let(:drop_sql) do %{
-
-
-
+  let(:drop_constraing_sql) do %{
+      DROP FUNCTION IF EXISTS check_imageable_create_integrity() CASCADE;
+      DROP FUNCTION IF EXISTS check_imageable_delete_integrity() CASCADE;
     }
   end
 

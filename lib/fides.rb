@@ -24,10 +24,9 @@ module Fides
 
     fides_sql_generator = get_sql_generator_class
 
-    sql = fides_sql_generator.get_create_function_sql(interface, associated_models, polymorphic_model)
-    sql << fides_sql_generator.get_delete_function_sql(interface, associated_models, polymorphic_model)
+    execution_statements = fides_sql_generator.executable_add_statements(interface, associated_models, polymorphic_model)
 
-    execute sql
+    execution_statements.each { |statement| execute statement }
   end
 
   def remove_polymorphic_triggers(opts)
@@ -36,9 +35,9 @@ module Fides
     polymorphic_model = opts[:polymorphic_model]
     interface = opts.has_key?(:interface_name) ? opts[:interface_name] : interface_name(polymorphic_model)
 
-    sql = get_sql_generator_class.get_drop_function_sql(interface)
+    execution_statements = get_sql_generator_class.executable_remove_statements(interface)
 
-    execute sql
+    execution_statements.each { |statement| execute statement }
   end
 
   private
