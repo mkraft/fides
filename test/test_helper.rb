@@ -1,9 +1,7 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require File.expand_path('../../lib/fides.rb', __FILE__)
-require 'pry'
 require 'pg'
-require 'sqlite3'
 require_relative 'integration/migrations/create_test_tables'
 require_relative 'integration/models/baby'
 require_relative 'integration/models/teenager'
