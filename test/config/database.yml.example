@@ -6,9 +6,3 @@ postgresql:
   username: postgres
   password: sqlsql
   host: localhost
-
-sqlite3:
-  adapter: sqlite3
-  database: /Users/martykraft/Code/fides/test/db/fides_test.sqlite3
-  pool: 5
-  timeout: 5000

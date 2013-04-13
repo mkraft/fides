@@ -4,6 +4,7 @@ require "bundler/gem_tasks"
 require 'rake/testtask'
 require 'pg'
 require 'yaml'
+require 'sqlite3'
 
 def postgres_db(opts)
   path = File.join(File.dirname(__FILE__), "test", "config", "database.yml")
@@ -23,12 +24,22 @@ def postgres_db(opts)
   end    
 end
 
+def create_sqlite3_db
+  db = SQLite3::Database.new "test/db/fides_test.sqlite3"
+end
+
+def destroy_sqlite3_db
+  File.delete("test/db/fides_test.sqlite3")
+end
+
 task :create_databases do
   postgres_db(:create => true)
+  create_sqlite3_db
 end
 
 task :destroy_databases do
   postgres_db(:create => false)
+  destroy_sqlite3_db
 end
 
 Rake::TestTask.new do |t|

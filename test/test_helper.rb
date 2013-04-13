@@ -7,11 +7,14 @@ require_relative 'integration/models/baby'
 require_relative 'integration/models/teenager'
 require_relative 'integration/models/senior'
 require_relative 'integration/models/clothing_article'
+require 'sqlite3'
 
 def migrate_database(adapter_name)
   path = File.join(File.dirname(__FILE__), "config", "database.yml")      
   yaml = YAML.load_file(path)
+  yaml["sqlite3"] = { :adapter => "sqlite3", :database => File.join(File.dirname(__FILE__), "db", "fides_test.sqlite3") }
   connection_config = yaml[adapter_name]
+
   ActiveRecord::Base.establish_connection(connection_config)
 
   Rails.stub :env, "test" do
