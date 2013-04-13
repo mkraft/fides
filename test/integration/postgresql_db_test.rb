@@ -1,7 +1,7 @@
 require_relative '../test_helper'
 
 module Fides
-  setup_postgres
+  migrate_database("postgresql")
 
   describe "PostgreSQL database interaction behaviour" do
     it "raises an exception inserting a polymorphic without a coresponding record" do

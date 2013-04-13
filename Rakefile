@@ -1,22 +1,34 @@
 #!/usr/bin/env rake
+
 require "bundler/gem_tasks"
 require 'rake/testtask'
 require 'pg'
 require 'yaml'
 
-task :create_databases do
+def postgres_db(opts)
   path = File.join(File.dirname(__FILE__), "test", "config", "database.yml")
   yaml = YAML.load_file(path)
   pg_connection_config = yaml["postgresql"]
   begin
-    conn = PG.connect(dbname: 'postgres', password: pg_connection_config["password"], host: pg_connection_config["host"], user: pg_connection_config["username"])
+    conn = PG.connect(dbname: 'postgres', 
+                      password: pg_connection_config["password"], 
+                      host: pg_connection_config["host"], 
+                      user: pg_connection_config["username"])
     conn.exec("DROP DATABASE IF EXISTS #{pg_connection_config['database']};") {}
-    conn.exec("CREATE DATABASE #{pg_connection_config['database']};") {}
+    conn.exec("CREATE DATABASE #{pg_connection_config['database']};") {} if opts[:create]
   rescue PGError => e
     puts e
   ensure
     conn.close unless conn.nil?
   end    
+end
+
+task :create_databases do
+  postgres_db(:create => true)
+end
+
+task :destroy_databases do
+  postgres_db(:create => false)
 end
 
 Rake::TestTask.new do |t|
@@ -26,4 +38,4 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :test =>  [:create_databases, :run_tests]
+task :test =>  [:create_databases, :run_tests, :destroy_databases]
