@@ -4,8 +4,8 @@ require 'active_support/concern'
 require 'active_support/inflector'
 require 'fides/version'
 require 'fides/sql_writer'
-require 'fides/postgresql'
-require 'fides/sqlite3'
+require 'fides/postgresql_writer'
+require 'fides/sqlite3_writer'
 require 'fides/database_adapter_error'
 
 module Fides
@@ -41,7 +41,7 @@ module Fides
   def get_sql_generator_class
     db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
     raise DatabaseAdapterError.new(db_adapter) unless SUPPORTED_ADAPTERS.include?(db_adapter)
-    return "Fides::#{db_adapter.capitalize}".constantize
+    return "Fides::#{db_adapter.capitalize}Writer".constantize
   end
 
   # TODO: Is it safe to just grab the first polymorphic association?

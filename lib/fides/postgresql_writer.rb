@@ -1,6 +1,6 @@
 module Fides
 
-  class Postgresql
+  class PostgresqlWriter
     include SqlWriter
 
     def self.executable_add_statements(interface_name, models, polymorphic_model)

@@ -6,6 +6,8 @@ require 'pg'
 require 'yaml'
 require 'sqlite3'
 
+SQLITE3_FILE_PATH = "test/db/fides_test.sqlite3"
+
 def postgres_db(opts)
   path = File.join(File.dirname(__FILE__), "test", "config", "database.yml")
   yaml = YAML.load_file(path)
@@ -25,11 +27,12 @@ def postgres_db(opts)
 end
 
 def create_sqlite3_db
-  db = SQLite3::Database.new "test/db/fides_test.sqlite3"
+  File.delete(SQLITE3_FILE_PATH) if File.exists?(SQLITE3_FILE_PATH)
+  db = SQLite3::Database.new SQLITE3_FILE_PATH
 end
 
 def destroy_sqlite3_db
-  File.delete("test/db/fides_test.sqlite3")
+  File.delete(SQLITE3_FILE_PATH)
 end
 
 task :create_databases do

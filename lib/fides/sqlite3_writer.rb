@@ -2,7 +2,7 @@ require 'fides/sql_writer'
 
 module Fides
 
-  class Sqlite3
+  class Sqlite3Writer
     include SqlWriter
 
     def self.executable_add_statements(interface_name, models, polymorphic_model)

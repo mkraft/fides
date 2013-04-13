@@ -1,8 +1,8 @@
 require_relative '../test_helper'
  
-describe Fides::Sqlite3 do
+describe Fides::Sqlite3Writer do
 
-  let(:subject) { Fides::Sqlite3 }
+  let(:subject) { Fides::Sqlite3Writer }
 
   it 'responds to #executable_add_statements' do
     assert_respond_to subject, :executable_add_statements

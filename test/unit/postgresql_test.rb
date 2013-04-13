@@ -1,8 +1,8 @@
 require_relative '../test_helper'
  
-describe Fides::Postgresql do
+describe Fides::PostgresqlWriter do
 
-  let(:subject) { Fides::Postgresql }
+  let(:subject) { Fides::PostgresqlWriter }
 
   it 'responds to #executable_add_statements' do
     assert_respond_to subject, :executable_add_statements
