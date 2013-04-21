@@ -26,6 +26,23 @@ module Fides
         assert_raises(ActiveRecord::StatementInvalid) { Senior.find(senior.id).delete }
       end
 
+      it "doesn't get in the way of :dependent => :destroy" do
+        baby = Baby.new
+        baby.name = "Suze"
+        baby.save
+        baby.reload
+        
+        clothing_article = ClothingArticle.new
+        clothing_article.name = "Bloomers"
+        clothing_article.wearable_id = baby.id
+        clothing_article.wearable_type = "Baby"
+        clothing_article.save
+        before_destroy_count = ClothingArticle.count
+        baby.destroy
+
+        assert_equal (before_destroy_count - 1), ClothingArticle.count
+      end
+
       it "allows an insert of a model type specified in #add_polymorphic_triggers" do
         baby = Baby.new
         baby.name = "JJ"
