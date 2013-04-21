@@ -24,6 +24,7 @@ module Fides
         clothing_article.save
 
         assert_raises(ActiveRecord::StatementInvalid) { Senior.find(senior.id).delete }
+        assert_raises(ActiveRecord::StatementInvalid) { Senior.find(senior.id).destroy }
       end
 
       it "doesn't get in the way of :dependent => :destroy" do
@@ -41,6 +42,22 @@ module Fides
         baby.destroy
 
         assert_equal (before_destroy_count - 1), ClothingArticle.count
+      end
+
+      it "does enfoce dependent destroy behaviour if delete is used instead of destroy" do
+        baby = Baby.new
+        baby.name = "Suze"
+        baby.save
+        baby.reload
+        
+        clothing_article = ClothingArticle.new
+        clothing_article.name = "Bloomers"
+        clothing_article.wearable_id = baby.id
+        clothing_article.wearable_type = "Baby"
+        clothing_article.save
+        before_destroy_count = ClothingArticle.count
+
+        assert_raises(ActiveRecord::StatementInvalid) { baby.delete }
       end
 
       it "allows an insert of a model type specified in #add_polymorphic_triggers" do
@@ -63,6 +80,15 @@ module Fides
         teenager.reload
 
         assert Teenager.find(teenager.id).delete
+      end
+
+      it "allows a destroy of a record NOT referenced by the polymorphic table" do
+        teenager = Teenager.new
+        teenager.name = "Johnny"
+        teenager.save
+        teenager.reload
+
+        assert Teenager.find(teenager.id).destroy
       end
 
       it "allows an insert of a model type that wasn't specified in #add_polymorphic_triggers" do
