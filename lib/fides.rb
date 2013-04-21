@@ -44,7 +44,6 @@ module Fides
     return "Fides::#{db_adapter.capitalize}Writer".constantize
   end
 
-  # TODO: Is it safe to just grab the first polymorphic association?
   def interface_name(model_name)
     model_name.constantize.reflect_on_all_associations.select { |r| r if r.options[:polymorphic] }.first.name
   end
