@@ -66,6 +66,16 @@ If you're using Rails < version 3.1, then use Fides in your migration like this:
     
     end
 
+## Tests
+
+    rake test:unit
+    rake test:sqlite3
+
+To run the postgresql integration tests you must first copy test/config/database.yml.example to test/config/database.yml
+and customize the values for your local postgres installation.
+
+    rake test:postgresql
+
 ## Caveats
 
 Fides assumes the use of Rails conventions, so if you find a case for something that needs overriding, 
