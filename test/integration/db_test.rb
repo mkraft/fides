@@ -93,12 +93,13 @@ module Fides
         assert Teenager.find(teenager.id).destroy
       end
 
-      it "allows an insert of a model type that wasn't specified in #add_polymorphic_triggers" do
+      it "does not allow an insert of a model type that wasn't specified in #add_polymorphic_triggers" do
         clothing_article = ClothingArticle.new
         clothing_article.name = "Nothing"
         clothing_article.wearable_id = 123
         clothing_article.wearable_type = "Zygote"
-        assert clothing_article.save
+        
+        assert_raises(ActiveRecord::StatementInvalid) { assert clothing_article.save }
       end
     end # describe
   end # run_common_tests

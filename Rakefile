@@ -47,9 +47,9 @@ namespace :test do
   end
 
   task :postgresql do
+    postgres_db(:create => false)
     postgres_db(:create => true)
     Fides.run_common_tests("postgresql")
-    postgres_db(:create => false)
   end
 
   task :sqlite3 do
