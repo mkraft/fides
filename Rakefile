@@ -5,6 +5,8 @@ require 'rake/testtask'
 require 'pg'
 require 'yaml'
 require 'sqlite3'
+require 'pry'
+require_relative 'test/integration/db_test'
 
 SQLITE3_FILE_PATH = "test/db/fides_test.sqlite3"
 
@@ -35,21 +37,25 @@ def destroy_sqlite3_db
   File.delete(SQLITE3_FILE_PATH)
 end
 
-task :create_databases do
-  postgres_db(:create => true)
-  create_sqlite3_db
-end
+namespace :test do
 
-task :destroy_databases do
-  postgres_db(:create => false)
-  destroy_sqlite3_db
-end
+  Rake::TestTask.new do |t|
+    t.name = :unit
+    t.libs << 'lib/fides'
+    t.test_files = FileList['test/unit/*_test.rb']
+    t.verbose = true
+  end
 
-Rake::TestTask.new do |t|
-  t.name = :run_tests
-  t.libs << 'lib/fides'
-  t.test_files = FileList['test/unit/*_test.rb', 'test/integration/*_test.rb']
-  t.verbose = true
-end
+  task :postgresql do
+    postgres_db(:create => true)
+    Fides.run_common_tests("postgresql")
+    postgres_db(:create => false)
+  end
 
-task :test =>  [:create_databases, :run_tests, :destroy_databases]
+  task :sqlite3 do
+    destroy_sqlite3_db
+    create_sqlite3_db
+    Fides.run_common_tests("sqlite3")
+  end
+
+end

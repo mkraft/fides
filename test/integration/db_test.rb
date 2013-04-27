@@ -1,7 +1,9 @@
 require_relative '../test_helper'
 
 module Fides
-  def self.run_common_tests
+  def self.run_common_tests(adapter)
+    connect_and_migrate_database(adapter)
+
     describe "PostgreSQL database interaction behaviour" do
       it "raises an exception inserting a polymorphic without a coresponding record" do
         clothing_article = ClothingArticle.new
@@ -101,9 +103,5 @@ module Fides
     end # describe
   end # run_common_tests
 
-  connect_and_migrate_database("postgresql")
-  run_common_tests
 
-  connect_and_migrate_database("sqlite3")
-  run_common_tests
 end # Fides
