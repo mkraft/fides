@@ -101,6 +101,10 @@ module Fides
         
         assert_raises(ActiveRecord::StatementInvalid) { assert clothing_article.save }
       end
+
+      it "drops the trigger properly"
+
+      it "does not allow an update to a model type that wasn't specified in #add_polymorphic_triggers"
     end # describe
   end # run_common_tests
 

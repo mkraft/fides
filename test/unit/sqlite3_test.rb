@@ -36,6 +36,7 @@ describe Fides::Sqlite3Writer do
       BEFORE INSERT ON pictures
       BEGIN 
         SELECT CASE
+          WHEN (NEW.imageable_type != 'Product' AND NEW.imageable_type != 'Employee' ) THEN RAISE(ABORT, 'There is no model by that name.')
           WHEN ((NEW.imageable_type = 'Product') AND (SELECT id FROM products WHERE id = NEW.imageable_id) ISNULL) THEN RAISE(ABORT, 'There is no Product with that id.')
           WHEN ((NEW.imageable_type = 'Employee') AND (SELECT id FROM employees WHERE id = NEW.imageable_id) ISNULL) THEN RAISE(ABORT, 'There is no Employee with that id.')
         END;

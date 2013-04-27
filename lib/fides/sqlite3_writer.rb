@@ -40,6 +40,15 @@ module Fides
             SELECT CASE 
         }
 
+      sql << 'WHEN ('
+
+      models.each do |model|  
+        sql << %{NEW.#{interface_name}_type != '#{model}' }
+        sql << 'AND ' unless model == models.last
+      end
+
+      sql << %{) THEN RAISE(ABORT, 'There is no model by that name.') }
+
       models.each do |model|
         sql << %{ 
           WHEN ((NEW.#{interface_name}_type = '#{model}') AND (SELECT id 
