@@ -66,27 +66,17 @@ If you're using Rails < version 3.1, then use Fides in your migration like this:
     
     end
 
+## Database Adapters
+
+Fides currently functions with `postgresql` and `sqlite3` adapters. Feel free to contribute other adapters as desired 
+(ex. `mysql2`), and ensure that the common database integration tests all pass prior to submitting the pull request.
+
 ## Tests
 
     rake test:unit
     rake test:integration:sqlite3
+    rake test:integration:postgresql
 
 To run the postgresql integration tests you must first copy test/config/database.yml.example to test/config/database.yml
 and customize the values for your local postgres installation.
-
-    rake test:integration:postgresql
-
-## Caveats
-
-Fides assumes the use of Rails conventions, so if you find a case for something that needs overriding, 
-please feel free to submit a bug or send a pull request.
-
-Fides currently only functions with PostgreSQL and SQLite3. Please feel free to contribute other adapters as desired.
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+    
