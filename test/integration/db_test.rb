@@ -105,6 +105,23 @@ module Fides
         assert_raises(ActiveRecord::StatementInvalid) { clothing_article.save }
       end
 
+      it "does not allow an update to a model type that wasn't specified in #add_polymorphic_triggers" do
+        baby = Baby.new
+        baby.name = "JJ"
+        baby.save
+        baby.reload
+        
+        clothing_article = ClothingArticle.new
+        clothing_article.name = "Onesie"
+        clothing_article.wearable_id = baby.id
+        clothing_article.wearable_type = "Baby"
+        clothing_article.save
+        clothing_article.reload
+
+        clothing_article.wearable_type = "Zygote"
+        assert_raises(ActiveRecord::StatementInvalid) { clothing_article.save }
+      end
+
       it "drops the trigger properly" do
         begin
           execute_migration(adapter) do
@@ -124,8 +141,6 @@ module Fides
           end
         end
       end
-
-      it "does not allow an update to a model type that wasn't specified in #add_polymorphic_triggers"
     end # describe
   end # run_common_tests
 
