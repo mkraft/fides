@@ -38,7 +38,6 @@ def destroy_sqlite3_db
 end
 
 namespace :test do
-
   Rake::TestTask.new do |t|
     t.name = :unit
     t.libs << 'lib/fides'
@@ -46,16 +45,17 @@ namespace :test do
     t.verbose = true
   end
 
-  task :postgresql do
-    postgres_db(:create => false)
-    postgres_db(:create => true)
-    Fides.run_common_tests("postgresql")
-  end
+  namespace :integration do
+    task :postgresql do
+      postgres_db(:create => false)
+      postgres_db(:create => true)
+      Fides.run_common_tests("postgresql")
+    end
 
-  task :sqlite3 do
-    # destroy_sqlite3_db
-    create_sqlite3_db
-    Fides.run_common_tests("sqlite3")
+    task :sqlite3 do
+      # destroy_sqlite3_db
+      create_sqlite3_db
+      Fides.run_common_tests("sqlite3")
+    end
   end
-
 end
