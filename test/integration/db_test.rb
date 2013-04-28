@@ -2,7 +2,10 @@ require_relative '../test_helper'
 
 module Fides
   def self.run_common_tests(adapter)
-    connect_and_migrate_database(adapter)
+    execute_migration(adapter) do
+      CreateTestTables.new.change
+      AddTriggers.new.up
+    end
 
     describe "PostgreSQL database interaction behaviour" do
       it "raises an exception inserting a polymorphic without a coresponding record" do
@@ -99,10 +102,28 @@ module Fides
         clothing_article.wearable_id = 123
         clothing_article.wearable_type = "Zygote"
         
-        assert_raises(ActiveRecord::StatementInvalid) { assert clothing_article.save }
+        assert_raises(ActiveRecord::StatementInvalid) { clothing_article.save }
       end
 
-      it "drops the trigger properly"
+      it "drops the trigger properly" do
+        begin
+          execute_migration(adapter) do
+            AddTriggers.new.down
+          end
+          clothing_article = ClothingArticle.new
+          clothing_article.name = "Nothing"
+          clothing_article.wearable_id = 123
+          clothing_article.wearable_type = "Zygote"
+          
+          assert clothing_article.save
+        rescue
+
+        ensure
+          execute_migration(adapter) do
+            AddTriggers.new.up
+          end
+        end
+      end
 
       it "does not allow an update to a model type that wasn't specified in #add_polymorphic_triggers"
     end # describe

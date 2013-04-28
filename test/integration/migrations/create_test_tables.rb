@@ -21,7 +21,5 @@ class CreateTestTables < ActiveRecord::Migration
       t.string :name
       t.timestamps
     end
-
-    add_polymorphic_triggers(:polymorphic_model => "ClothingArticle", :associated_models => ["Baby", "Senior", "Teenager"])
   end
 end
