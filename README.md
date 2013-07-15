@@ -32,8 +32,18 @@ Or install it yourself as:
 
 Fides has the following public methods:
 
-- `add_polymorphic_triggers`
-- `remove_polymorphic_triggers`
+#### `add_polymorphic_triggers`
+
+Parameters:
+    
+- `:polymorphi_model` (required)
+- `:associated_models` (required)
+
+#### `remove_polymorphic_triggers`
+
+Parameters:
+
+- `:polymorphic_model` (required)
 
 Following the [Rails Polymorphic Associations example](http://guides.rubyonrails.org/association_basics.html#polymorphic-associations),
 you would do the following in a migration:
