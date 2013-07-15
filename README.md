@@ -7,10 +7,10 @@ Enforces Rails polymorphic associations at the database level.
 Use this gem in Rails migrations to create SQL Triggers to enforce the data integrity of polymorphic associations at the 
 database level.
 
-Triggers are invoked by the database before inserts, updates, and deletes which prevent polymorphic associations from 
+Triggers are invoked by the database before inserts, updates, and deletes to prevent polymorphic associations from 
 losing data integrity.
 
-If an insert/update is attempted on the polymorphic table with a record that refers to a non-existent 
+If an insert/update is attempted on a polymorphic table with a record that refers to a non-existent 
 record in another table, a SQL error is raised. If a delete is attempted from a table that is 
 referred to by a record in the polymorphic table, a SQL error is raised.
 
