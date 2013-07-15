@@ -1,18 +1,18 @@
 # Fides
 
-Adds methods for use in Rails migrations to enforce polymorphic associations at the database level.
+Enforces Rails polymorphic associations at the database level.
 
 ### Longer Description
 
-The methods that this gem exposes are for use in Rails migrations and create SQL Triggers to enforce
-the data integrity of Polymorphic Associations.
+Use this gem in Rails migrations to create SQL Triggers to enforce the data integrity of polymorphic associations at the 
+database level.
 
-The triggers are invoked by the database before an insert or update on the polymorphic table, and before 
-a delete on tables referred to by the polymorphic table.
+Triggers are invoked by the database before inserts, updates, and deletes which prevent polymorphic associations from 
+losing data integrity.
 
 If an insert/update is attempted on the polymorphic table with a record that refers to a non-existent 
-record in another table then a SQL error is raised. If a delete is attempted from a table that is 
-referred to by a record in the polymorphic table then a SQL error is raised.
+record in another table, a SQL error is raised. If a delete is attempted from a table that is 
+referred to by a record in the polymorphic table, a SQL error is raised.
 
 ## Installation
 
@@ -78,5 +78,5 @@ Fides currently functions with `postgresql` and `sqlite3` adapters. Feel free to
     rake test:integration:postgresql
 
 To run the postgresql integration tests you must first copy test/config/database.yml.example to test/config/database.yml
-and customize the values for your local postgres installation.
+and customize the values for your local postgres install.
     
