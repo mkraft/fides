@@ -32,7 +32,7 @@ module Fides
         assert_raises(ActiveRecord::StatementInvalid) { Senior.find(senior.id).destroy }
       end
 
-      it "doesn't get in the way of :dependent => :destroy" do
+      it "doesn't get in the way of dependent: :destroy" do
         baby = Baby.new
         baby.name = "Suze"
         baby.save

@@ -6,7 +6,7 @@ module Fides
     def self.executable_add_statements(interface_name, models, polymorphic_model)
       sql = create_and_update_constraint_sql(interface_name, models, polymorphic_model)
       sql << delete_constraint_sql(interface_name, models, polymorphic_model)
-      return [sql]
+      [sql]
     end
 
     def self.executable_remove_statements(interface_name)
@@ -49,7 +49,7 @@ module Fides
 
       }
 
-      return strip_non_essential_spaces(sql)
+      strip_non_essential_spaces(sql)
     end
 
     def self.delete_constraint_sql(interface_name, models, polymorphic_model)
@@ -92,7 +92,7 @@ module Fides
         }
       end
 
-      return strip_non_essential_spaces(sql)
+      strip_non_essential_spaces(sql)
     end
 
     def self.drop_constraints_sql(interface_name)
@@ -100,7 +100,7 @@ module Fides
         DROP FUNCTION IF EXISTS check_#{interface_name}_create_integrity() CASCADE;
         DROP FUNCTION IF EXISTS check_#{interface_name}_delete_integrity() CASCADE;
       }
-      return strip_non_essential_spaces(sql)
+      strip_non_essential_spaces(sql)
     end
 
   end #class

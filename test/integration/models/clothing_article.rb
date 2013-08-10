@@ -1,3 +1,3 @@
 class ClothingArticle < ActiveRecord::Base
-  belongs_to :wearable, :polymorphic => true
+  belongs_to :wearable, polymorphic: true
 end

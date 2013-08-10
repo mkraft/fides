@@ -15,14 +15,14 @@ module Fides
       end
       statements << drop_constraint_sql(interface_name, "update")
       statements << update_constraint_sql(interface_name, models, polymorphic_model)
-      return statements
+      statements
     end
 
     def self.executable_remove_statements(interface_name)
       statements = []
       statements << drop_constraint_sql(interface_name, "create")
       statements << drop_constraint_sql(interface_name, "delete")
-      return statements
+      statements
     end
 
     private
@@ -59,7 +59,7 @@ module Fides
 
       sql << "END; END;"
 
-      return strip_non_essential_spaces(sql)
+      strip_non_essential_spaces(sql)
     end
 
       def self.update_constraint_sql(interface_name, models, polymorphic_model)
@@ -90,7 +90,7 @@ module Fides
 
       sql << "END; END;"
 
-      return strip_non_essential_spaces(sql)
+      strip_non_essential_spaces(sql)
     end
 
     def self.delete_constraint_sql(interface_name, associated_model, polymorphic_model)
@@ -108,7 +108,7 @@ module Fides
 
       }
 
-      return strip_non_essential_spaces(sql)
+      strip_non_essential_spaces(sql)
     end
 
   end

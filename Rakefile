@@ -13,14 +13,15 @@ SQLITE3_FILE_PATH = "test/db/fides_test.sqlite3"
 def postgres_db(opts)
   path = File.join(File.dirname(__FILE__), "test", "config", "database.yml")
   yaml = YAML.load_file(path)
-  pg_connection_config = yaml["postgresql"]
+  pg_connection_config = yaml.fetch("postgresql")
   begin
     conn = PG.connect(dbname: 'postgres', 
-                      password: pg_connection_config["password"], 
-                      host: pg_connection_config["host"], 
-                      user: pg_connection_config["username"])
+                      password: pg_connection_config.fetch("password"), 
+                      host: pg_connection_config.fetch("host"), 
+                      user: pg_connection_config.fetch("username"))
     conn.exec("DROP DATABASE IF EXISTS #{pg_connection_config['database']};") {}
-    conn.exec("CREATE DATABASE #{pg_connection_config['database']};") {} if opts[:create]
+    conn.exec("CREATE DATABASE 
+      #{pg_connection_config['database']};") {} if opts[:create]
   rescue PGError => e
     puts e
   ensure
@@ -47,8 +48,8 @@ namespace :test do
 
   namespace :integration do
     task :postgresql do
-      postgres_db(:create => false)
-      postgres_db(:create => true)
+      postgres_db(create: false)
+      postgres_db(create: true)
       Fides.run_common_tests("postgresql")
     end
 

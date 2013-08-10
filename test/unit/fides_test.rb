@@ -16,7 +16,7 @@ describe Fides do
     end
     class MyTestAssociaiton
       def options
-        {:polymorphic => true}
+        {polymorphic: true}
       end
       def name
         @imageable
@@ -38,15 +38,22 @@ describe Fides do
   end
 
   it "raises and exception if :associated_models isn't a parameter of #add_polymorphic_triggers" do
-    exception = assert_raises(ArgumentError) { 
-      @my_test_migration.add_polymorphic_triggers(:polymorphic_model => "Picture") 
+    exception = assert_raises(KeyError) { 
+      @my_test_migration.add_polymorphic_triggers(polymorphic_model: "Picture") 
     }
     assert_match /associated_models/, exception.message
   end
 
+  it "raises and exception if :polymorphic_model isn't a parameter of #remove_polymorphic_triggers" do
+    exception = assert_raises(KeyError) { 
+      @my_test_migration.remove_polymorphic_triggers({})
+    }
+    assert_match /polymorphic_model/, exception.message
+  end
+
   it "raises and exception if :polymorphic_model isn't a parameter of #add_polymorphic_triggers" do
-    exception = assert_raises(ArgumentError) { 
-      @my_test_migration.add_polymorphic_triggers(:associated_models => ["Product", "Employee"]) 
+    exception = assert_raises(KeyError) { 
+      @my_test_migration.add_polymorphic_triggers(associated_models: ["Product", "Employee"]) 
     }
     assert_match /polymorphic_model/, exception.message
   end
@@ -56,8 +63,8 @@ describe Fides do
       ActiveRecord::Base.stub :configurations, { "development" => { "adapter" => "fakedb" } } do
         exception = assert_raises(Fides::DatabaseAdapterError) { 
           @my_test_migration.add_polymorphic_triggers(
-            :polymorphic_model => "Picture", 
-            :associated_models => ["Product", "Employee"]
+            polymorphic_model: "Picture", 
+            associated_models: ["Product", "Employee"]
           )
         }
         assert_match /fakedb/, exception.message
@@ -70,9 +77,9 @@ describe Fides do
       Rails.stub :env, "development" do
         ActiveRecord::Base.stub :configurations, { "development" => { "adapter" => "postgresql" } } do
           @my_test_migration.add_polymorphic_triggers(
-            :polymorphic_model => "Picture", 
-            :associated_models => ["Product", "Employee"],
-            :interface_name => "imageable"
+            polymorphic_model: "Picture", 
+            associated_models: ["Product", "Employee"],
+            interface_name: "imageable"
           )
         end
       end
