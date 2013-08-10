@@ -141,8 +141,6 @@ module Fides
           end
         end
       end
-    end # describe
-  end # run_common_tests
-
-
-end # Fides
+    end
+  end
+end

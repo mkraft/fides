@@ -54,7 +54,7 @@ namespace :test do
     end
 
     task :sqlite3 do
-      # destroy_sqlite3_db
+      destroy_sqlite3_db
       create_sqlite3_db
       Fides.run_common_tests("sqlite3")
     end
