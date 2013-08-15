@@ -52,8 +52,7 @@ you would do the following in a migration:
     class AddReferentialIntegrityToImageable < ActiveRecord::Migration
 
       def up
-        add_polymorphic_triggers(polymorphic_model: "Picture", 
-                                 associated_models: ["Employee", "Product"])
+        add_polymorphic_triggers(polymorphic_model: "Picture", associated_models: ["Employee", "Product"])
       end
 
       def down
@@ -69,8 +68,7 @@ If you're using Rails < version 3.1, then use Fides in your migration like this:
       extend Fides
 
       def self.up
-        add_polymorphic_triggers(polymorphic_model: "Picture", 
-                                 associated_models: ["Employee", "Product"])
+        add_polymorphic_triggers(polymorphic_model: "Picture", associated_models: ["Employee", "Product"])
       end
 
       def self.down
